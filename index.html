@@ -34,9 +34,9 @@
         }
 
         .emoji {
-            font-size: 60px;
+            font-size: 65px;
             margin-bottom: 15px;
-            transition: transform 0.3s ease;
+            transition: transform 0.2s ease;
         }
 
         .bounce {
@@ -61,7 +61,6 @@
             margin-bottom: 20px;
         }
 
-        /* Input Nama */
         .input-group {
             margin-bottom: 20px;
         }
@@ -99,6 +98,7 @@
             background-color: #ff4757;
             color: white;
             box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+            z-index: 10;
         }
 
         #btnYes:hover {
@@ -110,6 +110,7 @@
             background-color: #ced6e0;
             color: #2f3542;
             position: absolute;
+            z-index: 10;
         }
 
         .success-message {
@@ -131,9 +132,8 @@
             <h1 id="titleText">Kak, Maafin Saya Ya?</h1>
             <p>Janji nggak bakal diulangi lagi deh. Hehehe 😇</p>
             
-            <!-- Input Nama -->
             <div class="input-group" id="inputGroup">
-                <input type="text" id="nameInput" placeholder="Masukkan nama panggilan dia di sini..." oninput="updateName()">
+                <input type="text" id="nameInput" placeholder="Masukkan nama panggilan kamu ya sayang, di sini..." oninput="updateName()">
             </div>
 
             <div class="btn-container" id="btnContainer">
@@ -143,7 +143,7 @@
         </div>
 
         <div class="success-message" id="successSection">
-            <div class="emoji">🎉</div>
+            <div class="emoji">🥰</div>
             <h2>Yeay! Makasih udah dimaafin! ❤️</h2>
             <p>You're the best, ehe! ✨</p>
         </div>
@@ -155,7 +155,10 @@
         const titleText = document.getElementById('titleText');
         const nameInput = document.getElementById('nameInput');
 
-        // Fungsi mengubah teks judul berdasarkan input nama
+        // Daftar emotikon bertingkat biar makin dramatis & interaktif
+        const cryingEmojis = ["🥺", "💧", "😢", "😭", " Pleaaase 🤲"];
+        let emotionIndex = 0;
+
         function updateName() {
             let name = nameInput.value.trim();
             if (name === "") {
@@ -165,13 +168,13 @@
             }
         }
 
-        // Fungsi tombol "Nggak" kabur dan emot jadi nangis
         function moveButton() {
-            // Ubah emot jadi nangis
-            emojiIcon.innerText = "😭";
+            // Ganti emot secara berurutan tiap kali tombol "Nggak" disentuh/dideketin
+            emojiIcon.innerText = cryingEmojis[emotionIndex];
+            emotionIndex = (emotionIndex + 1) % cryingEmojis.length;
             emojiIcon.classList.remove('bounce');
 
-            // Hitung posisi acak di layar
+            // Pindahkan tombol secara acak di dalam layar
             const maxX = window.innerWidth - btnNo.offsetWidth - 50;
             const maxY = window.innerHeight - btnNo.offsetHeight - 50;
 
@@ -183,7 +186,7 @@
             btnNo.style.top = randomY + 'px';
         }
 
-        // Event listener biar tombolnya lari-lari & nangis saat dideketin/disentuh
+        // Event interaktif saat kursor mendekat atau disentuh
         btnNo.addEventListener('mouseover', moveButton);
         btnNo.addEventListener('click', moveButton);
         btnNo.addEventListener('touchstart', (e) => {
@@ -191,9 +194,7 @@
             moveButton();
         });
 
-        // Fungsi ketika tombol "Mau / Iya" ditekan (emot jadi happy)
         function sayYes() {
-            emojiIcon.innerText = "🥰";
             document.getElementById('questionSection').style.display = 'none';
             document.getElementById('successSection').style.display = 'block';
         }
